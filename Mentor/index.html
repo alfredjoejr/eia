@@ -28,6 +28,142 @@
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+
+      .slider_custom{
+          width: 100%;
+          max-width: 100%;
+          height: 550px;
+          margin: auto;
+          position: relative;
+          overflow:hidden;
+      }
+      .list {
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100%;
+          display: flex;
+          width: max-content;
+          transition: 1s;
+      }
+      .list img{
+          width: 1600px;
+          max-width: 100vw;
+          height: 550px;
+          object-fit: cover;
+      }
+      .buttons{
+          position: absolute;
+          top: 45%;
+          left: 2.5%;
+          width: 96%;
+          display: flex;
+          justify-content: space-between;
+      }
+      .buttons button {
+          width:50px;
+          height: 50px;
+          border-radius: 505;
+          color: #ffffff;
+          border: none;
+          font-family: monospace;
+          font-weight: bold;
+          font-size:60px;
+      }
+      .dots{
+          position: absolute;
+          bottom: 10px;
+          color: #fff;
+          left: 0;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          transition: 1s;
+      }
+      .dots li {
+          list-style: none;
+          width: 10px;
+          height: 10px;
+          background-color: #fff;
+          margin: 20px;
+          border-radius: 20px;
+      }
+      .dots li.active {
+          width: 30px;
+      }
+
+      @media screen and ( max-width: 768px) { 
+        .slider_custom{
+            width: 100%;
+            max-width: 100%;
+            height: 240px;
+            margin: auto;
+            position: relative;
+            overflow:hidden;
+        }
+        .list {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            width: max-content;
+            transition: 1s;
+        }
+        .list img{
+            width: 1600px;
+            max-width: 100vw;
+            height: 270px;
+            object-fit: cover;
+        }
+        .buttons{
+            position: absolute;
+            top: 55%;
+            left: 2%;
+            width: 95%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .buttons button {
+            width:30px;
+            height: 50px;
+            border-radius: 505;
+            color: #ffffff;
+            border: none;
+            font-family: monospace;
+            font-weight: bold;
+            font-size:33px;
+        }
+        .dots{
+            position: absolute;
+            bottom: 1px;
+            color: #fff;
+            left: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            transition: 1s;
+        }
+        .dots li {
+            list-style: none;
+            width: 5px;
+            height: 5px;
+            background-color: #fff;
+            margin: 20px;
+            border-radius: 20px;
+        }
+        .dots li.active {
+            width: 20px;
+        }
+          
+      }
+  </style>
+
 </head>
 
 <body>
@@ -75,13 +211,87 @@
     </div>
   </header><!-- End Header -->
 
-  <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex justify-content-center align-items-center">
-    <div class="container position-relative" data-aos="zoom-in" data-aos-delay="100">
-      <a href="https://www.flickr.com/photos/202640968@N07/54460446388/in/album-72177720325165695/"><h1>Learning Today ,<br>Leading Tomorrow</h1>
-      <h2>We are the team of talented students working to develop our society.</h2></a>
+    <div class="slider_custom">
+        <div class="list">
+            <div class="item">
+                <img src="../Mentor/assets/img/hero-bg.jpg" alt="image1">
+            </div>
+            <div class="item">
+                <img src="https://live.staticflickr.com/65535/54469245540_865f08e49a_o.jpg" alt="image2">
+            </div>
+            <div class="item">
+                <img src="2024/Thumbnail/IMG_3330.JPG" alt="image3">
+            </div>
+            <div class="item">
+                <img src="2024/Thumbnail/kanali.jpg" alt="image4">
+            </div>
+            <div class="item">
+                <img src="2024/Thumbnail/IMG_9007.JPG" alt="image5">
+            </div>
+        </div>
+        <!--button prev and next-->
+        <div class="buttons">
+            <button id="prev"><</button>
+        <button id="next">></button>
+        </div>
+        <!--Dots (if 5 items => 5 dots)-->
+        <ul class="dots">
+           <li class="active"></li>
+           <li></li>
+           <li></li>
+           <li></li>
+           <li></li> 
+        </ul>
     </div>
-  </section><!-- End Hero -->
+
+
+    
+   <script>
+        let list = document.querySelector('.slider_custom .list');
+        let items = document.querySelectorAll('.slider_custom .list .item');
+        let dots = document.querySelectorAll('.slider_custom .dots li');
+        let prev = document.getElementById('prev');
+        let next = document.getElementById('next');
+
+        let active = 0;
+        let lengthitems = items.length - 1;
+
+        next.onclick = function() {
+            if (active + 1 > lengthitems) {
+                active = 0;
+            } else {
+                active = active + 1;
+            }
+            reloadslider_custom();
+        }
+
+        prev.onclick = function() {
+            if (active - 1 < 0) {
+                active = lengthitems;
+            } else {
+                active = active - 1;
+            }
+            reloadslider_custom();
+        }
+
+        let autoslide = setInterval(() => { next.click(); }, 6000);
+
+        function reloadslider_custom() {
+            let checkleft = items[active].offsetLeft;
+            list.style.left = -checkleft + 'px';
+
+            let lastactiveDot = document.querySelector('.slider_custom .dots li.active');
+            if (lastactiveDot) lastactiveDot.classList.remove('active');
+            dots[active].classList.add('active');
+        }
+
+        dots.forEach((li, key) => {
+            li.addEventListener('click', function() {
+                active = key;
+                reloadslider_custom();
+            })
+        })
+    </script>
 
   <main id="main">
 
@@ -145,7 +355,7 @@
             <span class="count">0</span>
             <span>+</span>
           </div>
-          <p>Years of Service🏆</p>
+          <p>Years of Service</p>
         </div>
       </div>
     </div>
